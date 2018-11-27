@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <title>Giving Tuesday</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel='icon' type='image/png' href='img/favicon.ico' />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <meta property="og:image" content="img/160x160.jpg" />
+    <meta property="og:image:secure_url" content="img/160x160.jpg" />
+    <meta property="og:description" content="I chose GOAT for #givingtuesday, you should too!" />
+  </head>
+  <body>
+
+    <nav class="navbar navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="img/160x160.jpg" width="30" height="30" alt="">
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <%= yield %>
+
+    </div>
+
+  </body>
+  </html>

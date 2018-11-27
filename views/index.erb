@@ -1,0 +1,84 @@
+<div class="row pt-3">
+  <div class="col-12">
+    <center>
+      <h1>GOAT Giving Tuesday</h1>
+    </center>
+  </div>
+</div>
+<div class="row pt-5">
+  <div class="col-7">
+    <p>Last year we fell into the Facebook "giving Tuesday" trap. Facebook said they would match $1 million to <em>*qualifying donations to qualifying nonprofits</em>.</p>
+    <p>We, along with many others, took the bait only to find out a week later, <b>"none of your donations qualified for matching"</b> This year we decided we would find a real partner. Enter the original, and best coworking space in Greenville, <a href="http://atlaslocal.com">Atlas Local</a>. We told AtLo about the issue and they stepped up.</p>
+    <p>This year, every single dollar up to $1,000 on giving Tuesday will be matched by <a href="http://atlaslocal.com">Atlo</a>. Why? Because they actually care. About GOAT, and about Greenville. So instead of being let down by Facebook, let your #givingtuesday be empowered by a local cause, backed by a local business full of good, caring, local people.</p>
+    <p>And hey, if you need an office, or a desk, or just a place to work every now and then, check out <a href="http://atlaslocal.com">Atlas Local</a>, you wont be disappointed.</p>
+  </div>
+  <div class="col m-3">
+    <div class="card">
+      <div class="card-body">
+        <h3>$<%= @total %> raised</h3>
+        <div class="progress" style="height: 30px">
+          <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percent %>%"></div>
+        </div>
+        <p><%= @percent %>% of $1,000 matched by AtLo</p>
+        <div class="give mr-5">
+          <form action="/charge" method="post">
+            <div class="input-group input-group-lg">
+              <input type="number" class="amount form-control" data-amount="value" aria-describedby="inputGroup-sizing-lg" plceholder="00" />
+              <div class="input-group-append">
+                <button type="button" class="btn btn-success btn-lg pt-2" type="submit">Donate!</button>
+              </div>
+            </div>
+            <small>Enter whatever amount you like</small>
+          </form>
+        </div>
+      </div>
+    </div>
+      <p class="p-3">GOAT is a 501(c)3. All Donations are tax-deductible. To learn more about GOAT, visit <a href="http://goattrips.org">goattrips.org</a></p>
+  </div>
+</div>
+
+<div class="row pt-5">
+  <div class="col text-center">
+    Sponsored by the wonderful people at:
+    <br />
+    <a href="http://atlaslocal.com"><img src="img/atlo.jpg" border="0" width="200" /></a>
+  </div>
+</div>
+
+<script>
+    $('.give').on('click', 'button', function(e) {
+      e.preventDefault();
+      $form = $('.amount');
+      $amount = $form[0].valueAsNumber * 100;
+      console.log($amount);
+      if ($amount == "" | isNaN($amount)) {
+        alert("You gotta put an amount in there!");
+        return false;
+      }
+      $this = $(this);
+      console.log(e);
+      var handler = StripeCheckout.configure({
+        key: '<%= settings.publishable_key %>',
+        name: "Great Outdoor Adventure Trips",
+        image: 'img/160x160.jpg',
+        allowRememberMe: false,
+        billingAddress: true,
+        amount: $amount,
+        panelLabel: 'Donate {{amount}}',
+        closed: function() {
+        },
+        token: function(token) {
+          $.post( "/charge", {
+            token_id: token.id,
+            donation_amount: $amount,
+            email: token.email
+          }).done(function() {
+            window.location.href = "/";
+          }).fail(function() {
+            alert( "Sorry! There was an error processing your donation." );
+          });
+        }
+      });
+      handler.open();
+    });
+  </script>
